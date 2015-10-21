@@ -1,0 +1,77 @@
+
+
+
+
+
+public class LeatCommonAncestor {
+	
+	public Node createTree(){
+		Node root=new Node(4);
+	Node left=	root.left=new Node(2);
+    Node right=    root.right=new Node(7);
+    left.left=new Node(1);
+    left.right=new Node(3);
+    right.left=new Node(6);
+    right.right=new Node(8);
+		return root;
+	}
+	
+	
+	class Node{
+		  int data;
+		    Node left;
+		    Node right;
+		Node(int data){
+			this.data=data;
+		}
+	}	
+	
+	
+
+ public Node lca(Node root,int v1,int v2)
+    {
+	 
+    return null;   
+    
+    }
+
+ 
+public Node visitNode(Node root,int v1,int v2){
+	 
+if(root==null){
+	return null;
+}
+
+int tempStorage=root.data;
+
+if((tempStorage>v1&&tempStorage<v2)||(tempStorage<v1&&tempStorage>v2)){
+	return root;
+}
+
+if(tempStorage==v1||tempStorage==v2){
+	return root;
+}
+
+if(tempStorage>v1&&tempStorage>v2){
+ return visitNode(root.left,v1,v2);
+}
+
+if(tempStorage<v1&&tempStorage<v2){
+ return	visitNode(root.right,v1,v2);
+}
+	 
+	 
+	 return null;
+ }
+	
+ public static void main(String[] args){
+	 LeatCommonAncestor lca=new LeatCommonAncestor();
+	Node root= lca.createTree();
+	Node lcaNode=lca.visitNode(root, 6, 7);
+	
+	System.out.println(lcaNode.data);
+	
+ }
+ 
+
+}
