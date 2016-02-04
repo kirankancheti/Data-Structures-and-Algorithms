@@ -1,0 +1,82 @@
+
+/**
+ * Class to find the diameter of a tree
+ * 
+ *
+ */
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class DIAMETEROFTREE {
+	
+	 /** Procedure to find the diameter of the graph t 
+     * Runs in time O(|V|+|E|)
+     *
+     * @param t : represent the graph.
+     */
+
+
+	static int diameter(Graph t) {
+		Queue<Vertex> Q = new LinkedList<>();
+		Vertex z = BFS(t, t.verts.get(1), Q);       
+		z = (z.distance == -1) ? z : BFS(t, z, Q);
+		return z.distance;
+	}
+
+	public static Vertex BFS(Graph g, Vertex src, Queue<Vertex> Q) {
+
+		for (Vertex u : g) { // O(V)
+			u.seen = false;
+			u.parent = null;
+			u.distance = Integer.MAX_VALUE;
+		}
+
+		Vertex z = null;
+		int numberOfVerticesProcessed = 0;
+		if (!src.seen) {
+			src.distance = 0;
+			Q.add(src);
+
+			src.seen = true;
+
+			while (!Q.isEmpty()) {
+				numberOfVerticesProcessed++;
+				Vertex u = Q.remove();
+				for (Edge e : u.Adj) {
+					Vertex v = e.otherEnd(u); // O(V + E)
+					if (!v.seen) {
+						v.seen = true;
+						v.parent = u;
+						v.distance = u.distance + 1;
+						z = v;
+						Q.add(v);
+					}
+
+				}
+			}
+		}
+		if (numberOfVerticesProcessed < g.verts.size()) {
+			z.distance = -1;
+		}
+
+		return z;
+	}
+
+	public static void main(String[] args) throws FileNotFoundException {
+		Scanner in;
+		if (args.length > 0) {
+			File inputFile = new File(args[0]);
+			in = new Scanner(inputFile);
+		} else {
+			in = new Scanner(System.in);
+		}
+		Graph g = Graph.readGraph(in, false); // read undirected graph from
+												// stream "in"
+		System.out.println("Diameter of the graph " + diameter(g));
+
+	}
+
+}
