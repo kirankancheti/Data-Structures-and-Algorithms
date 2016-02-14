@@ -1,10 +1,11 @@
-// Ver 1.0:  Wec, Feb 3.  Initial description.
-
 import java.util.Comparator;
 
 public class BinaryHeap<T> implements PQ<T> {
     T[] pq;
     Comparator<T> c;
+    /**
+     * 
+     */
     private int size;
     /** Build a priority queue with a given array q */
     BinaryHeap(T[] q, Comparator<T> comp) {
@@ -13,7 +14,15 @@ public class BinaryHeap<T> implements PQ<T> {
 	buildHeap();
     }
 
-    /** Create an empty priority queue of given maximum size */
+    public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	/** Create an empty priority queue of given maximum size */
     BinaryHeap(int n, Comparator<T> comp) { /* to be implemented */
     this((T[])new Object[n],comp);
     }
@@ -42,6 +51,13 @@ public class BinaryHeap<T> implements PQ<T> {
     
     public void reSize(){
     	
+         T[] temp = (T[]) new Object[2*size];
+         for (int i = 1; i <= size; i++) {
+             temp[i] = pq[i];
+         }
+         size=2*size;
+         pq = temp;
+    	
     }
 
     public T remove() { /* to be implemented */
@@ -52,7 +68,7 @@ public class BinaryHeap<T> implements PQ<T> {
     }
 
     public T peek() { /* to be implemented */
-	return null;
+	return pq[1];
     }
 
     /** pq[i] may violate heap order with parent */
@@ -100,6 +116,9 @@ public class BinaryHeap<T> implements PQ<T> {
 
     /** Create a heap.  Precondition: none. */
     void buildHeap() {
+    	for(int i=size/2;i>0;i++){
+    		percolateDown(i);
+    	}
     }
 
     /* sort array A[1..n].  A[0] is not used. 
@@ -108,5 +127,17 @@ public class BinaryHeap<T> implements PQ<T> {
        max heap ==> ascending order
      */
     public static<T> void heapSort(T[] A, Comparator<T> comp) { /* to be implemented */
+    	BinaryHeap<T> heap = new BinaryHeap<T>(A, comp);
+    	for(int i=heap.size;i>0;i--){
+    		heap.exchange(A[1],A[i]);
+    		heap.size--;
+    		heap.percolateDown(1);
+    	}
     }
+    
+	private void exchange(T t, T t2) {
+		T temp = t;
+		t = t2;
+		t2 = temp;
+	}
 }
