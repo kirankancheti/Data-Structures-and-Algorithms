@@ -1,0 +1,112 @@
+import java.util.Comparator;
+import java.util.Scanner;
+
+public class MST {
+    static final int Infinity = Integer.MAX_VALUE;
+
+    static int PrimMST(Graph g)
+    {
+    	
+    	
+    	Comparator<Edge> comp = new Comparator<Edge>(){
+			@Override
+			public int compare(Edge o1, Edge o2) {
+				return o2.Weight - o1.Weight;
+			}	
+		};
+		
+		
+        int wmst = 0;
+        Vertex src = g.verts.get(1);
+
+        // Code for Prim's algorithm needs to be written
+        Edge[] A=new Edge[Graph.numEdges];
+        BinaryHeap<Edge> heap = new BinaryHeap<Edge>(A, comp);
+
+        src.seen=true;
+        for(Edge e:src.Adj){
+        	heap.add(e);
+        }
+        
+        while(heap.getSize()!=0){
+        	Edge e=heap.remove();
+        	if(e.From.seen&&(!e.To.seen)){
+        	Vertex u=e.From;
+        	Vertex v=e.To;
+        	v.parent=u;
+        	wmst=wmst+e.Weight;
+        	v.seen=true;
+        	
+        	for(Edge f:v.Adj){
+        		if(f.otherEnd(v).seen==false){
+        			heap.add(f);
+        		}
+        	}
+        	}
+        	
+        	
+        	
+        }
+        
+        return wmst;
+    }
+    
+    
+    static int PrimMST2(Graph g)
+    {
+    	
+    	
+    	Comparator<Vertex> comp = new Comparator<Vertex>(){
+			@Override
+			public int compare(Vertex o1, Vertex o2) {
+				return o2.distance - o1.distance;
+			}	
+		};
+		
+		
+        int wmst = 0;
+        Vertex src = g.verts.get(1);
+
+        // Code for Prim's algorithm needs to be written
+        Vertex[] A=new Vertex[g.numNodes];
+        BinaryHeap<Vertex> heap = new BinaryHeap<Vertex>(A, comp);
+        
+        for(Vertex v:g.verts){
+        	v.distance=Infinity;
+        }
+        
+        src.distance=0;
+        for(Vertex v:g.verts){
+        	heap.add(v);
+        }
+        
+        
+        while(heap.getSize()!=0){
+        	Vertex u=heap.remove();
+        	u.seen=true;
+        	wmst=wmst+u.distance;
+   
+            for(Edge e:u.Adj){
+            	Vertex v=e.otherEnd(u);
+            	if((!v.seen) && e.Weight<v.distance){
+            		v.distance=e.Weight;
+            		v.parent=u;
+            		heap.percolateUp(i);
+            	}
+            }
+        	
+        	
+        }
+        
+        return wmst;
+    }
+    
+    
+
+    public static void main(String[] args) 
+    {
+        Scanner in = new Scanner(System.in);
+        Graph g = Graph.readGraph(in, false);
+        System.out.println(PrimMST(g));
+    }
+}
