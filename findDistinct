@@ -1,0 +1,69 @@
+
+
+import java.util.Collection;
+import java.util.HashSet;
+
+/* TestClass represents a class, whose objects are to be sorted */
+public class Ques1 {
+
+
+	public static  <T> int findDistinct(T[] arr){
+		int count = 0;
+		int pointerForward = 0;
+		HashSet<T> hs = new HashSet<T>();	
+		HashSet<T> temp = new HashSet<T>();	/*Saves elements that have already been added */
+		
+		while(count<arr.length){
+			if(!hs.add(arr[count])){
+				temp.add(arr[count]);	/* it has a duplicate */
+			}
+			count++;
+		}
+		
+		hs.removeAll(temp);	/* remove all duplicate elements */
+		
+		for(int i = 0;i<arr.length;i++){
+			if(hs.contains(arr[i])){	/* Look-up complexity is O(1) */
+				exchange(arr, i, pointerForward);		/* moving the unique elements to the front */
+				pointerForward++;
+			}
+		}
+		
+		return pointerForward;
+	}
+	
+	private static <T> void exchange(T[] arr, int i, int j) {
+        T temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    } 
+	
+	public static void main(String[] args) {
+		TestClass[] arr = {new TestClass("geography"), new TestClass("maths"), new TestClass("oranges"), new TestClass("cactus"), new TestClass("papaya"), new TestClass("geography"), new TestClass("abc"), new TestClass("maths"), new TestClass("papaya"), new TestClass("maths")};
+		System.out.print("Original array: ");
+		for(TestClass testClass:arr){
+			System.out.print(testClass.element + " ");
+		}
+		
+		System.out.println("\n\nNumber of distinct elements: " + findDistinct(arr));
+		System.out.print("\nModified array: ");
+		
+		for(TestClass testClass:arr){
+			System.out.print(testClass.element + " ");
+		}
+	}
+
+}
+
+/*
+ Sample Output:
+ 
+Original array: geography maths oranges cactus papaya geography abc maths papaya maths 
+
+Number of distinct elements: 3
+
+Modified array: cactus oranges abc geography papaya geography maths maths papaya maths 
+ 
+ 
+ * 
+ */
