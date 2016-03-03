@@ -1,0 +1,58 @@
+import java.util.Arrays;
+import java.util.Random;
+
+public class MostFrequentElement {
+	
+	 public static int mostFrequent(Integer[] arr){
+		 
+		 
+		 Arrays.sort(arr);
+		int previousElement;int currentElement; 
+		int maxNumberOfOccurances=0;int numberOfOccurances=1; int maxNumber=0;
+		for(int i=1;i<arr.length;i++){
+			 previousElement=arr[i-1];
+			 currentElement=arr[i];
+              
+			 if(previousElement==currentElement){
+				 numberOfOccurances++;
+			 }
+			 else{
+				 if(numberOfOccurances>maxNumberOfOccurances){
+					 maxNumber=arr[i-1]; 
+					 maxNumberOfOccurances=numberOfOccurances;
+					 numberOfOccurances=1;
+					 
+				 }
+			 }
+			 
+		 }
+		 
+		 return maxNumber;
+	 }
+	 
+	 
+	 public static void main(String[] args){
+		 
+		 Random random = new Random(10000);
+		  int n = 100;
+		  int Low = 10;
+		  int High = 100;
+		//  int Result = r.nextInt(High-Low) + Low;
+			if(args.length > 0) { n = Integer.parseInt(args[0]); }
+		        Integer[] A = new Integer[n]; 
+		        for (int i = 0; i < n; i++) {
+		            A[i] = new Integer(random.nextInt(High-Low) + Low);
+		        }
+		        
+
+	 
+	 System.out.println(mostFrequent(A));
+	 
+	 for (int i = 0; i < n; i++) {
+        
+        		 System.out.print( A[i] +" ");
+     }
+	 }
+
+	 
+}
